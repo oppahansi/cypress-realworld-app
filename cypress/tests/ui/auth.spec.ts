@@ -5,9 +5,8 @@ describe("User Sign-up and Login", function () {
   beforeEach(function () {
     cy.task("db:seed");
 
-    cy.server();
-    cy.route("POST", "/users").as("signup");
-    cy.route("POST", "/bankAccounts").as("createBankAccount");
+    cy.intercept("POST", "/users").as("signup");
+    cy.intercept("POST", "/bankAccounts").as("createBankAccount");
   });
 
   it("should redirect unauthenticated user to signin page", function () {

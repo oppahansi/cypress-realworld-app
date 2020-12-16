@@ -43,9 +43,8 @@ Cypress.Commands.add("login", (username, password, rememberUser = false) => {
     autoEnd: false,
   });
 
-  cy.server();
-  cy.route("POST", "/login").as("loginUser");
-  cy.route("GET", "checkAuth").as("getUserProfile");
+  cy.intercept("POST", "/login").as("loginUser");
+  cy.intercept("GET", "checkAuth").as("getUserProfile");
 
   cy.location("pathname", { log: false }).then((currentPath) => {
     if (currentPath !== signinPath) {
@@ -131,9 +130,8 @@ Cypress.Commands.add("loginByXstate", (username, password = Cypress.env("default
     autoEnd: false,
   });
 
-  cy.server();
-  cy.route("POST", "/login").as("loginUser");
-  cy.route("GET", "/checkAuth").as("getUserProfile");
+  cy.intercept("POST", "/login").as("loginUser");
+  cy.intercept("GET", "/checkAuth").as("getUserProfile");
   cy.visit("/signin", { log: false }).then(() => {
     log.snapshot("before");
   });
@@ -158,8 +156,7 @@ Cypress.Commands.add("loginByXstate", (username, password = Cypress.env("default
 });
 
 Cypress.Commands.add("logoutByXstate", () => {
-  cy.server();
-  cy.route("POST", "/logout").as("logoutUser");
+  cy.intercept("POST", "/logout").as("logoutUser");
 
   const log = Cypress.log({
     name: "logoutByXstate",
